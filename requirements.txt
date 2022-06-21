@@ -1,0 +1,15 @@
+# counterfit
+rapidfuzz
+optuna
+requests
+pillow
+rich 
+
+# frameworks
+adversarial-robustness-toolbox
+textattack[dev]
+augly
+
+transformers 
+datasets
+
