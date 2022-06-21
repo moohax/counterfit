@@ -1,20 +1,9 @@
 from abc import abstractmethod
-import numpy as np
+
 
 import os
-import time
-import traceback
-import datetime
-from counterfit.options import set_options
+
 from counterfit.utils import set_id
-
-
-from rich.table import Table
-from counterfit.targets import CFTarget
-
-from art.utils import compute_success_array, random_targets
-from scipy.stats import entropy
-from art.utils import clip_and_round
 
 
 class CFModule:
@@ -41,9 +30,9 @@ class CFModule:
         pass
 
 
-class CFAlgo:
+class CFAlgo(CFModule):
     """
-    The base class for all modules.
+    The base class for all algorithmic modules.
     """
 
     def __init__(self, name, target, framework, attack, options, scan_id=None):
@@ -137,152 +126,147 @@ class CFAlgo:
         if verbose:
             run_summary["input_samples"] = self.samples
 
-        # data = orjson.dumps(
-        #     run_summary,
-        #     option=orjson.OPT_SERIALIZE_NUMPY | orjson.OPT_APPEND_NEWLINE
-        # )
-
         if not filename:
             results_folder = self.get_results_folder()
             filename = f"{results_folder}/run_summary.json"
 
-        with open(filename, "w") as summary_file:
-            summary_file.write(data.decode())
+        # with open(filename, "w") as summary_file:
+        #     summary_file.write(data.decode())
 
 
-def build_algo(target, attack, scan_id=None):
-    """Build a new CFAttack.
+# def build_algo(target, attack, scan_id=None):
+#     """Build a new CFAttack.
 
-    Search through the loaded frameworks for the attack and create a new CFAttack object for use.
+#     Search through the loaded frameworks for the attack and create a new CFAttack object for use.
 
-    Args:
-        target_name (CFTarget, required): The target object.
-        attack_name (str, required): The attack name.
-        scan_id (str, Optional): A unique value
+#     Args:
+#         target_name (CFTarget, required): The target object.
+#         attack_name (str, required): The attack name.
+#         scan_id (str, Optional): A unique value
 
-    Returns:
-        CFAttack: A new CFAttack object.
-    """
+#     Returns:
+#         CFAttack: A new CFAttack object.
+#     """
 
-    # Resolve the attack
-    try:
-        for k, v in framework().items():
-            if attack in list(v["attacks"].keys()):
-                framework = v["module"]()
-                attack = v["attacks"][attack]
+#     # Resolve the attack
+#     try:
+#         for k, v in framework().items():
+#             if attack in list(v["attacks"].keys()):
+#                 framework = v["module"]()
+#                 attack = v["attacks"][attack]
 
-    except Exception as error:
-        print(f"Failed to load framework or resolve {attack}: {error}")
-        traceback.print_exc()
+#     except Exception as error:
+#         print(f"Failed to load framework or resolve {attack}: {error}")
+#         traceback.print_exc()
 
-    # Ensure the attack is compatible with the target
-    if target.data_type not in attack["attack_data_tags"]:
-        print(
-            f"Target data type ({target.data_type}) is not compatible with the attack chosen ({attack['attack_data_tags']})"
-        )
-        return False
+#     # Ensure the attack is compatible with the target
+#     if target.data_type not in attack["attack_data_tags"]:
+#         print(
+#             f"Target data type ({target.data_type}) is not compatible with the attack chosen ({attack['attack_data_tags']})"
+#         )
+#         return False
 
-    if hasattr(target, "classifier"):
-        print("Target classifier may not be compatible with this attack.")
-    else:
-        print(
-            "Target does not have classifier attribute set. Counterfit will treat the target as a blackbox."
-        )
+#     if hasattr(target, "classifier"):
+#         print("Target classifier may not be compatible with this attack.")
+#     else:
+#         print(
+#             "Target does not have classifier attribute set. Counterfit will treat the target as a blackbox."
+#         )
 
-    # Have the framework build the attack.
-    try:
-        new_attack = framework.build(
-            target=target,
-            attack=attack["attack_class"],  # The dotted path of the attack.
-        )
+#     # Have the framework build the attack.
+#     try:
+#         new_attack = framework.build(
+#             target=target,
+#             attack=attack["attack_class"],  # The dotted path of the attack.
+#         )
 
-    except Exception as error:
-        print(f"Framework failed to build attack: {error}")
-        traceback.print_exc()
+#     except Exception as error:
+#         print(f"Framework failed to build attack: {error}")
+#         traceback.print_exc()
 
-    # Create a CFAttack object
-    try:
-        cfattack = CFModule(
-            name=attack["attack_class"],
-            target=target,
-            framework=framework,
-            attack=new_attack,
-            options=set_options(attack["attack_parameters"]),
-        )
+#     # Create a CFAttack object
+#     try:
+#         cfattack = CFModule(
+#             name=attack["attack_class"],
+#             target=target,
+#             framework=framework,
+#             attack=new_attack,
+#             options=set_options(attack["attack_parameters"]),
+#         )
 
-    except Exception as error:
-        print(f"Failed to build CFAttack: {error}")
-        traceback.print_exc()
+#     except Exception as error:
+#         print(f"Failed to build CFAttack: {error}")
+#         traceback.print_exc()
 
-    return cfattack
-
-
-def _frameworks():
-    pass
+#     return cfattack
 
 
-def _attacks():
-    pass
+# def _frameworks():
+#     pass
 
 
-import numpy as np
+# def _attacks():
+#     pass
 
 
-def run_algo(self) -> bool:
-    """Run a prepared attack. Get the appropriate framework and execute the attack.
+# import numpy as np
 
-    Args:
-        attack_id (str, required): The attack id to run.
 
-    Returns:
-        Attack: A new Attack object with an updated cfattack_class. Additional properties set in this function include, attack_id (str)
-        and the parent framework (str). The framework string is added to prevent the duplication of code in run_attack.
-    """
+# def run_algo(self) -> bool:
+#     """Run a prepared attack. Get the appropriate framework and execute the attack.
 
-    # Set the initial values for the attack. Samples, logger, etc.
-    self.prepare_attack()
+#     Args:
+#         attack_id (str, required): The attack id to run.
 
-    # Run the attack
-    self.set_status("running")
+#     Returns:
+#         Attack: A new Attack object with an updated cfattack_class. Additional properties set in this function include, attack_id (str)
+#         and the parent framework (str). The framework string is added to prevent the duplication of code in run_attack.
+#     """
 
-    # Start timing the attack for the elapsed_time metric
-    start_time = time.time()
+#     # Set the initial values for the attack. Samples, logger, etc.
+#     self.prepare_attack()
 
-    # Run the attack
-    try:
-        results = self.framework.run(cfattack)
-    except Exception as error:
-        # postprocessing steps for failed attacks
-        success = [False] * len(self.initial_labels)
+#     # Run the attack
+#     self.set_status("running")
 
-        print(f"Failed to run {self.attack_id} ({self.name}): {error}")
+#     # Start timing the attack for the elapsed_time metric
+#     start_time = time.time()
 
-        results = None
-        return
+#     # Run the attack
+#     try:
+#         results = self.framework.run(cfattack)
+#     except Exception as error:
+#         # postprocessing steps for failed attacks
+#         success = [False] * len(self.initial_labels)
 
-    # postprocessing steps for successful attacks
-    finally:
-        # Stop the timer
-        end_time = time.time()
+#         print(f"Failed to run {self.attack_id} ({self.name}): {error}")
 
-        # Set the elapsed time metric
-        self.set_elapsed_time(start_time, end_time)
+#         results = None
+#         return
 
-        # Set the results the attack returns
-        # Results are attack and framework specific.
-        self.set_results(results)
+#     # postprocessing steps for successful attacks
+#     finally:
+#         # Stop the timer
+#         end_time = time.time()
 
-        # Determine the success of the attack
-        success = self.framework.check_success(cfattack)
+#         # Set the elapsed time metric
+#         self.set_elapsed_time(start_time, end_time)
 
-        # Set the success value
-        self.set_success(success)
+#         # Set the results the attack returns
+#         # Results are attack and framework specific.
+#         self.set_results(results)
 
-        # Give the framework an opportunity to process the results, generate reports, etc
-        self.framework.post_attack_processing(cfattack)
+#         # Determine the success of the attack
+#         success = self.framework.check_success(cfattack)
 
-        # Mark the attack as complete
-        self.set_status("complete")
+#         # Set the success value
+#         self.set_success(success)
 
-        # Let the user know the attack has completed successfully.
-        print("Attack completed {}".format(self.attack_id))
+#         # Give the framework an opportunity to process the results, generate reports, etc
+#         self.framework.post_attack_processing(cfattack)
+
+#         # Mark the attack as complete
+#         self.set_status("complete")
+
+#         # Let the user know the attack has completed successfully.
+#         print("Attack completed {}".format(self.attack_id))
