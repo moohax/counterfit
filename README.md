@@ -4,7 +4,7 @@
 
 
 ## About
-Counterfit is a red team tool for finding and exploiting machine learning systems. 
+Counterfit is a red team tool for finding and exploiting machine learning systems. This is a rewrite of the Counterfit tool found here. 
 
 ### Requirements
 - Ubuntu 18.04+
