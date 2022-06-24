@@ -73,7 +73,7 @@ class CFTarget:
 
     def predict_wrapper(self, x, **kwargs):
         output = self.predict(x)
-        if self.logger:
+        if hasattr(self, "logger"):
             labels = self.outputs_to_labels(output)
             for sample, tmp_output in zip(x, output):
                 try:

@@ -33,22 +33,19 @@ class CFAlgo(CFModule):
     The base class for all algorithmic modules.
     """
 
-    def __init__(self, name, target, framework, attack, options, scan_id=None):
+    def __init__(self):
 
         # Parent framework
-        self.name = name
-        self.attack_id = set_id()
-        self.scan_id = scan_id
-        self.target = target
-        self.framework = framework
-        self.attack = attack
-        self.options = options
+        # self.name = name
+        # self.attack_id = set_id()
+        # self.scan_id = scan_id
+        # self.target = target
+        # self.framework = framework
+        # self.attack = attack
+        # self.options = options
 
         # Attack information
-        self.created_on = datetime.datetime.utcnow().strftime(
-            "%a, %d %b %Y %H:%M:%S GMT"
-        )
-        self.attack_status = "pending"
+        created_on = datetime.datetime.utcnow().strftime("%a, %d %b %Y %H:%M:%S GMT")
 
         # Algo parameters
         self.samples = None
@@ -64,16 +61,6 @@ class CFAlgo(CFModule):
 
         # reporting
         self.run_summary = None
-
-        # Get the samples.
-        self.samples = target.get_samples(
-            self.options.cf_options["sample_index"]["current"]
-        )
-
-        self.logger = self.set_logger(
-            logger=self.options.cf_options["logger"]["current"]
-        )
-        self.target.logger = self.logger
 
     def prepare_attack(self):
         # Send a request to the target for the selected sample

@@ -7,9 +7,16 @@ from art.utils import compute_success_array
 
 
 class ArtEvasionAttack(CFAlgo):
-    def build(
-        self, target: CFTarget, channels_first: bool, clip_values: tuple
-    ) -> object:
+    def run(
+        self,
+        target: CFTarget,
+        x,
+        y=None,
+        params=None,
+        channels_first: bool = False,
+        clip_values: tuple = (0, 1),
+    ) -> bool:
+
         """
         Build the attack.
         """
@@ -23,15 +30,14 @@ class ArtEvasionAttack(CFAlgo):
             clip_values=clip_values,
         )
 
-        self.attack = self.attack_cls(target_classifier)
-        return True
+        attack = self.attack_cls(target_classifier)
 
-    def run(self, x, y=None, params=None):
-        # Give the framework an opportunity to preprocess any thing in the attack.
         self.pre_attack_processing()
-        results = self.attack.generate(x=np.array(x, dtype=np.float32), y=y)
-
-        return results
+        if y:
+            self.results = attack.generate(x=np.array(x, dtype=np.float32), y=y)
+        else:
+            self.results = attack.generate(x)
+        return True
 
     def pre_attack_processing(self):
         pass

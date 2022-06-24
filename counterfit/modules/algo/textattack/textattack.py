@@ -1,5 +1,5 @@
-from textattack import Attacker
-from textattack.datasets import Dataset
+from textattack.shared.attack import Attack
+from textattack.datasets import TextAttackDataset
 from counterfit.module import CFModule
 from counterfit.module import CFAlgo
 import numpy as np
@@ -43,7 +43,7 @@ class TextAttackModule(CFModule):
         # get labels for samples and zip with samples
         dataset = self.create_dataset(cfattack)
 
-        new_attack = Attacker(cfattack.attack, dataset)
+        new_attack = Attack(cfattack.attack, dataset)
         results = new_attack.attack_dataset()
         return [r.perturbed_text() for r in results]
 
