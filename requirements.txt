@@ -38,6 +38,7 @@ colorama==0.4.5
 colorlog==6.6.0
 commonmark==0.9.1
 conllu==4.4.2
+-e git+https://github.com/moohax/counterfit.git@fc9231887c7c077e66964b5e3bc0a662067fe39e#egg=counterfit
 cycler==0.11.0
 cymem==2.0.6
 datasets==2.3.2
