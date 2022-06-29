@@ -64,10 +64,13 @@ class MyTarget(CFTarget):
 
 if __name__ == "__main__":
     # Test the load and predict
+    print("creating target")
     target = MyTarget()
     target.predict(target.image.reshape(1, *target.input_shape))
 
+    print("running hsj")
     hsj = CFHopSkipJump()
     hsj.run(target, target.image.reshape(1, *target.input_shape))
 
+    print("done")
     # Image.fromarray((im_a * 255).astype(np.uint8), "RGB").save("./maybe.png")

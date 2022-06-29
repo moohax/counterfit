@@ -1,5 +1,5 @@
-from textattack.shared.attack import Attack
-from textattack.datasets import TextAttackDataset
+from textattack import Attack
+from textattack.datasets import Dataset
 from counterfit.module import CFModule
 from counterfit.module import CFAlgo
 import numpy as np
