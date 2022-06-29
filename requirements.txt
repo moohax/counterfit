@@ -38,7 +38,6 @@ colorama==0.4.5
 colorlog==6.6.0
 commonmark==0.9.1
 conllu==4.4.2
--e git+https://github.com/moohax/counterfit.git@fc9231887c7c077e66964b5e3bc0a662067fe39e#egg=counterfit
 cycler==0.11.0
 cymem==2.0.6
 datasets==2.3.2
@@ -178,7 +177,6 @@ pyasn1-modules==0.2.8
 pycld2==0.41
 pycodestyle==2.8.0
 pycparser==2.21
-pydantic==1.8.2
 pyflakes==2.4.0
 Pygments==2.12.0
 pyparsing==3.0.9
@@ -236,7 +234,6 @@ sqlitedict==2.0.0
 srsly==2.4.3
 stack-data==0.3.0
 stanza==1.4.0
-starlette==0.19.1
 stevedore==3.5.0
 tabulate==0.8.9
 tensorboard==2.9.1
@@ -245,7 +242,7 @@ tensorboard-plugin-wit==1.8.1
 tensorboardX==2.5.1
 tensorflow==2.5.0
 tensorflow-estimator==2.5.0
-tensorflow-hub==0.12.0
+huggingface-hub
 tensorflow-text==2.5.0
 termcolor==1.1.0
 terminado==0.15.0
@@ -266,7 +263,6 @@ traitlets==5.3.0
 transformers==4.20.1
 typed-ast==1.5.4
 typer==0.4.1
-typing-extensions==3.7.4.3
 untokenize==0.1.1
 urllib3==1.26.9
 visdom==0.1.8.9
