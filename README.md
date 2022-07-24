@@ -1,16 +1,15 @@
-![Counterfit](counterfit.png "Counterfit")
-
-
+![Counterfit](counterfit_plain.png "Counterfit")
 
 
 ## About
 Counterfit is a red team tool for finding and exploiting machine learning systems. This is a rewrite of the Counterfit tool found here. 
 
 ### Requirements
-- Ubuntu 18.04+
 - Python 3.7+
-- Windows is supported by Counterfit, but not necessarily officially supported by each individual framework. Choose your own adventure
-- On Windows the [Visual C++ 2019 redistributable](https://support.microsoft.com/en-us/help/2977003/the-latest-supported-visual-c-downloads) is required
+- Ubuntu 18.04+
+- Windows 10+
+    - Windows is supported by Counterfit, but not necessarily officially supported by each individual framework. Choose your own adventure
+    - On Windows the [Visual C++ 2019 redistributable](https://support.microsoft.com/en-us/help/2977003/the-latest-supported-visual-c-downloads) is required
 
 ## Quick Start
 It's highly recommended you use a virtual env of some kind.
@@ -32,7 +31,7 @@ $> cf-venv\Scripts\activate.[bat, ps1]
 
 ### Install 
 ```
-$> pip install .
+$> pip install .  
 ```
 
 ### Notes
@@ -42,6 +41,7 @@ Most ML frameworks will initialize a `.` folder somewhere. These folders are use
 ## Acknowledgments
 
 - Logo by [@monoxgas](https://twitter.com/monoxgas)
+- Original code from [@rdheeko](https://twitter.com/rdheeko), [@drhyrum](https://twitter.com/drhyrum), and [@nmspinach](https://twitter.com/NMspinach)
 
 Counterfit leverages excellent open source projects, including,
 
@@ -49,4 +49,4 @@ Counterfit leverages excellent open source projects, including,
 - [TextAttack](https://github.com/QData/TextAttack)
 - [Augly](https://github.com/facebookresearch/AugLy)
 
-
+ 
